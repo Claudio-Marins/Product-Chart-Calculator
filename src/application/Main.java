@@ -34,21 +34,23 @@ public class Main {
                 line = br.readLine();
            }
 
-        }
-        catch (IOException e){
-            out.println("Error: " + e.getMessage());
-        }
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(targetPath))){
+                for (String lines:list){
+                    bw.write(lines);
+                    bw.newLine();
+                }
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(targetPath))){
-            for (String line:list){
-                bw.write(line);
-                bw.newLine();
+            }
+            catch (IOException e){
+                out.println("Error: " + e.getMessage());
             }
 
         }
         catch (IOException e){
             out.println("Error: " + e.getMessage());
         }
+
+
 
 
 
