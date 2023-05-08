@@ -2,9 +2,9 @@ package application;
 
 import utilities.Product;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -15,29 +15,60 @@ public class Main {
         Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
         Product product;
-        String path = "C:\\temp\\in.csv";
+        String sourcePath = "C:\\temp\\in.csv";
+        String targetPath = "C:\\temp\\summary.csv";
         out.println("Iniciando programa");
+        List<String> list = new ArrayList<>();
 
-
-        try (BufferedReader br = new BufferedReader(new FileReader(path))){
+        try (BufferedReader br = new BufferedReader(new FileReader(sourcePath))){
            String line = br.readLine();
            while(line!=null){
                product = new Product();
                Product.validateThreeValues(line);
                if (Product.validateThreeValues(line)) {
                    product.lineSplit(line);
-                   out.println(product.getPrice());
+                   Product.validateTypeValue(product.getPrice(),product.getQuantity());
+                   list.add(product.nameReturn());
+
                }
                 line = br.readLine();
            }
-
-
-
-
 
         }
         catch (IOException e){
             out.println("Error: " + e.getMessage());
         }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(targetPath))){
+            for (String line:list){
+                bw.write(line);
+                bw.newLine();
+            }
+
+        }
+        catch (IOException e){
+            out.println("Error: " + e.getMessage());
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
